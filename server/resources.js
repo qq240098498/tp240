@@ -7,6 +7,7 @@ const ROOM_TYPE = ['冷藏库', '冷藏车', '冷冻库'];
 const PROBE_STATUS = ['在用', '停用', '送检'];
 const BATCH_STATUS = ['在库', '待放行', '已放行', '已拒收'];
 const SOURCE_LIST = ['自动', '人工'];
+const TIME_RE = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
 
 function roomCode(data, id) {
   const room = data.rooms.find((r) => r.id === id);
@@ -42,19 +43,20 @@ function decorateProbe(data, probe) {
   });
 }
 
-function decorateBatch(data, batch) {
-  const stats = coldlib.excursionStats(data, batch.id);
-  const check = coldlib.releaseCheck(data, batch);
+function decorateBatch(data, batch, check) {
+  const chk = check || coldlib.releaseCheck(data, batch);
   const releases = data.releases.filter((r) => r.batchId === batch.id);
   return Object.assign({}, batch, {
     roomCode: roomCode(data, batch.roomId),
-    recordCount: stats.recordCount,
-    longestExcursionMinutes: stats.longestMinutes,
-    totalExcursionMinutes: stats.totalMinutes,
-    mkt: check.mkt,
-    chainGapCount: check.chain.gapCount,
-    expiredProbeCodes: check.expiredProbes.map((p) => p.probeCode),
-    releaseCheck: check,
+    recordCount: chk.recordCount,
+    segmentCount: chk.segments.length,
+    longestExcursionMinutes: chk.longestMinutes,
+    totalExcursionMinutes: chk.totalMinutes,
+    mkt: chk.mkt,
+    chainGapCount: chk.chain.gapCount,
+    exemptSeamCount: chk.chain.exemptCount,
+    expiredProbeCodes: chk.expiredProbes.map((p) => p.probeCode),
+    releaseCheck: chk,
     releaseCount: releases.length,
     lastDecision: releases.length ? releases[releases.length - 1].decision : '',
   });
@@ -126,8 +128,10 @@ function updateRoom(data, id, payload) {
 function removeRoom(data, id) {
   const room = data.rooms.find((r) => r.id === id);
   if (!room) throw new AppError(404, 'ROOM_NOT_FOUND', '这个冷库或者车厢不存在');
-  const used = data.probes.filter((p) => p.roomId === id).length + data.batches.filter((b) => b.roomId === id).length;
-  if (used > 0) throw new AppError(409, 'ROOM_IN_USE', '名下还有 ' + used + ' 条探头或者批次，不能删除', { count: used });
+  const used = data.probes.filter((p) => p.roomId === id).length
+    + data.batches.filter((b) => b.roomId === id).length
+    + data.segments.filter((s) => s.roomId === id).length;
+  if (used > 0) throw new AppError(409, 'ROOM_IN_USE', '名下还有 ' + used + ' 条探头、批次或者监护段，不能删除', { count: used });
   data.rooms = data.rooms.filter((r) => r.id !== id);
   return { removed: id };
 }
@@ -183,8 +187,8 @@ function updateProbe(data, id, payload) {
 function removeProbe(data, id) {
   const probe = data.probes.find((p) => p.id === id);
   if (!probe) throw new AppError(404, 'PROBE_NOT_FOUND', '这个探头不存在');
-  const used = data.records.filter((r) => r.probeId === id).length;
-  if (used > 0) throw new AppError(409, 'PROBE_IN_USE', '这个探头名下还有 ' + used + ' 条温度记录，不能删除', { count: used });
+  const used = data.records.filter((r) => r.probeId === id).length + data.segments.filter((s) => s.probeId === id).length;
+  if (used > 0) throw new AppError(409, 'PROBE_IN_USE', '这个探头名下还有 ' + used + ' 条温度记录或者监护段，不能删除', { count: used });
   data.probes = data.probes.filter((p) => p.id !== id);
   return { removed: id };
 }
@@ -199,18 +203,54 @@ function listBatches(data, query) {
   return decorated.sort((a, b) => (a.loadedAt < b.loadedAt ? 1 : -1));
 }
 
+// 段判定结果补上设备与探头信息，页面直接展示
+function decorateSegmentVerdict(data, v) {
+  const probe = coldlib.probeOf(data, v.probeId);
+  const room = coldlib.roomOf(data, v.roomId);
+  return Object.assign({}, v, {
+    probeCode: probe ? probe.code : '',
+    probeStatus: probe ? probe.status : '',
+    calibratedUntil: probe ? probe.calibratedUntil : '',
+    roomCode: room ? room.code : '',
+    roomName: room ? room.name : '',
+    roomType: room ? room.type : '',
+  });
+}
+
 function batchDetail(data, id) {
   const batch = data.batches.find((b) => b.id === id);
   if (!batch) throw new AppError(404, 'BATCH_NOT_FOUND', '这个批次不存在');
-  const rows = coldlib.recordsOfBatch(data, id).map((r) => Object.assign({}, r, {
+  const tl = coldlib.buildTimeline(data, batch);
+  const check = coldlib.judgeTimeline(data, batch, tl);
+  const inTimeline = {};
+  for (const r of tl.rows) inTimeline[r.id] = true;
+  const suppressedById = {};
+  for (const r of tl.suppressed) suppressedById[r.id] = r;
+  const orphanById = {};
+  for (const r of tl.orphans) orphanById[r.id] = true;
+  const disabledById = {};
+  for (const r of tl.disabledDropped) disabledById[r.id] = true;
+  const outOfRange = (r) => Number(r.temperatureC) > Number(data.settings.upperLimitC) || Number(r.temperatureC) < Number(data.settings.lowerLimitC);
+  const records = coldlib.recordsOfBatch(data, id).map((r) => Object.assign({}, r, {
     probeCode: probeCode(data, r.probeId),
     probeExpired: !coldlib.probeValidOn(coldlib.probeOf(data, r.probeId), String(r.at).slice(0, 10)),
+    outOfRange: outOfRange(r),
+    inTimeline: !!inTimeline[r.id],
+    suppressed: !!suppressedById[r.id],
+    orphan: !!orphanById[r.id],
+    disabled: !!disabledById[r.id],
   }));
-  return Object.assign({}, decorateBatch(data, batch), {
-    records: rows,
-    effectiveRecords: coldlib.effectiveRecords(data, id).map((r) => Object.assign({}, r, { probeCode: probeCode(data, r.probeId) })),
-    segments: coldlib.excursionStats(data, id).segments,
-    chainGaps: coldlib.chainGaps(data, id).gaps,
+  const withProbe = (r) => Object.assign({}, r, { probeCode: probeCode(data, r.probeId), outOfRange: outOfRange(r) });
+  return Object.assign({}, decorateBatch(data, batch, check), {
+    records,
+    timeline: tl.rows.map(withProbe),
+    segments: check.segments.map((v) => decorateSegmentVerdict(data, v)),
+    excursions: check.excursions,
+    chainGaps: tl.gaps,
+    exemptSeams: tl.seams,
+    suppressedRecords: tl.suppressed.map(withProbe),
+    orphanRecords: tl.orphans.map(withProbe),
+    disabledRecords: tl.disabledDropped.map(withProbe),
     releases: data.releases.filter((r) => r.batchId === id).slice().sort((a, b) => (a.decidedAt < b.decidedAt ? 1 : -1)),
   });
 }
@@ -222,7 +262,7 @@ function validateBatch(data, payload, current) {
   if (!String(merged.product || '').trim()) errors.product = '品名不能为空';
   if (!data.rooms.some((r) => r.id === merged.roomId)) errors.roomId = '所在冷库不存在';
   if (!BATCH_STATUS.includes(merged.status)) errors.status = '状态只能是：' + BATCH_STATUS.join('、');
-  if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(String(merged.loadedAt || ''))) errors.loadedAt = '入库时刻格式要像 2026-09-01 08:00:00';
+  if (!TIME_RE.test(String(merged.loadedAt || ''))) errors.loadedAt = '入库时刻格式要像 2026-09-01 08:00:00';
   const units = Number(merged.units);
   if (!Number.isFinite(units) || units <= 0) errors.units = '件数要是大于零的数';
   if (Object.keys(errors).length) throw new AppError(400, 'VALIDATION_FAILED', '有几项没通过校验', errors);
@@ -271,8 +311,84 @@ function removeBatch(data, id) {
   const used = data.records.filter((r) => r.batchId === id).length;
   data.records = data.records.filter((r) => r.batchId !== id);
   data.releases = data.releases.filter((r) => r.batchId !== id);
+  data.segments = data.segments.filter((s) => s.batchId !== id);
   data.batches = data.batches.filter((b) => b.id !== id);
   return { removed: id, removedRecords: used };
+}
+
+/* ---------- 监护段 ---------- */
+
+function decorateSegment(data, seg, seq) {
+  const probe = coldlib.probeOf(data, seg.probeId);
+  const room = coldlib.roomOf(data, seg.roomId);
+  const end = coldlib.segEnd(seg);
+  const recordCount = data.records.filter((r) => r.batchId === seg.batchId && r.probeId === seg.probeId && r.at >= seg.from && r.at <= end).length;
+  return Object.assign({}, seg, {
+    seq,
+    probeCode: probe ? probe.code : '',
+    probeStatus: probe ? probe.status : '',
+    roomCode: room ? room.code : '',
+    roomName: room ? room.name : '',
+    roomType: room ? room.type : '',
+    recordCount,
+  });
+}
+
+function listSegments(data, batchId) {
+  const batch = data.batches.find((b) => b.id === batchId);
+  if (!batch) throw new AppError(404, 'BATCH_NOT_FOUND', '这个批次不存在');
+  return coldlib.segmentsOfBatch(data, batchId).map((s) => decorateSegment(data, s, s.seq));
+}
+
+function validateSegment(data, payload, current) {
+  const merged = Object.assign({}, current || {}, payload || {});
+  const errors = {};
+  if (!data.probes.some((p) => p.id === merged.probeId)) errors.probeId = '探头不存在';
+  if (!data.rooms.some((r) => r.id === merged.roomId)) errors.roomId = '设备（冷库或者车厢）不存在';
+  if (!TIME_RE.test(String(merged.from || ''))) errors.from = '开始时刻格式要像 2026-09-01 08:00:00';
+  const to = String(merged.to || '').trim();
+  if (to && !TIME_RE.test(to)) errors.to = '结束时刻格式要像 2026-09-01 08:00:00，留空表示进行中';
+  if (!errors.from && !errors.to && to && to <= String(merged.from)) errors.to = '结束时刻要晚于开始时刻';
+  if (Object.keys(errors).length) throw new AppError(400, 'VALIDATION_FAILED', '这段监护段没通过校验', errors);
+  return merged;
+}
+
+function createSegment(data, batchId, payload) {
+  const batch = data.batches.find((b) => b.id === batchId);
+  if (!batch) throw new AppError(404, 'BATCH_NOT_FOUND', '这个批次不存在');
+  const merged = validateSegment(data, payload, null);
+  const seg = {
+    id: store.nextId('sg', data.segments),
+    batchId,
+    probeId: merged.probeId,
+    roomId: merged.roomId,
+    from: String(merged.from),
+    to: String(merged.to || '').trim(),
+    reason: String(merged.reason || '').trim(),
+  };
+  data.segments.push(seg);
+  return decorateSegment(data, seg, 0);
+}
+
+function updateSegment(data, id, payload) {
+  const seg = data.segments.find((s) => s.id === id);
+  if (!seg) throw new AppError(404, 'SEGMENT_NOT_FOUND', '这段监护段不存在');
+  const merged = validateSegment(data, payload, seg);
+  Object.assign(seg, {
+    probeId: merged.probeId,
+    roomId: merged.roomId,
+    from: String(merged.from),
+    to: String(merged.to || '').trim(),
+    reason: String(merged.reason || '').trim(),
+  });
+  return decorateSegment(data, seg, 0);
+}
+
+function removeSegment(data, id) {
+  const seg = data.segments.find((s) => s.id === id);
+  if (!seg) throw new AppError(404, 'SEGMENT_NOT_FOUND', '这段监护段不存在');
+  data.segments = data.segments.filter((s) => s.id !== id);
+  return { removed: id };
 }
 
 function listRecords(data, query) {
@@ -299,7 +415,7 @@ function validateRecord(data, payload) {
   const probe = data.probes.find((p) => p.id === payload.probeId);
   if (!probe) errors.probeId = '探头不存在';
   if (!SOURCE_LIST.includes(payload.source)) errors.source = '来源只能是：' + SOURCE_LIST.join('、');
-  if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(String(payload.at || ''))) errors.at = '记录时刻格式要像 2026-09-01 08:00:00';
+  if (!TIME_RE.test(String(payload.at || ''))) errors.at = '记录时刻格式要像 2026-09-01 08:00:00';
   if (payload.temperatureC === undefined || payload.temperatureC === '') errors.temperatureC = '温度不能为空';
   if (Object.keys(errors).length) throw new AppError(400, 'VALIDATION_FAILED', '这条温度记录没通过校验', errors);
   return { batch, probe };
@@ -372,6 +488,7 @@ module.exports = {
   listRooms, roomDetail, createRoom, updateRoom, removeRoom,
   listProbes, createProbe, updateProbe, removeProbe,
   listBatches, batchDetail, createBatch, updateBatch, removeBatch,
+  listSegments, createSegment, updateSegment, removeSegment,
   listRecords, createRecord, removeRecord,
   listReleases, decide,
   ROOM_STATUS, ROOM_TYPE, PROBE_STATUS, BATCH_STATUS, SOURCE_LIST,

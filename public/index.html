@@ -96,14 +96,21 @@
         <div class="panel">
           <div class="panel-head">
             <h2>批次清单</h2>
-            <span class="panel-hint">点一行展开温度记录、超限段、断链与放行判定</span>
+            <span class="panel-hint">点一行展开监护段、拼接时间线、超限段、断链与放行判定</span>
           </div>
+          <details class="rules-details panel-rules">
+            <summary>判定口径（多段拼接）</summary>
+            <p>一批货可登记多段监护段，每段绑定一台探头与一个设备（冷库或冷藏车）；判定时按时刻把各段记录接成一条时间线。</p>
+            <p>同一时刻有多条记录时只取一条：手工记录优先于自动记录；来源相同时，后开始的段（新接管的探头）优先；再相同则后登记的记录优先。没被采用的记录逐条列在批次详情的「被压盖记录」里。</p>
+            <p>段与段的接缝处，相邻两条记录的空档不超过交接宽限（设置里的 handoverGraceMinutes，默认 60 分钟）的，认定为换探头/换设备造成的交接空档，豁免断链并逐条标注原因；超过交接宽限的接缝空档、以及同一段内超过断链门槛的空档，一律算断链，不允许用豁免盖掉真断链。</p>
+            <p>任一段触及超限、断链或探头校准过期，整批即不满足放行条件；判定结果点名到段、到记录、到设备。</p>
+          </details>
           <div class="table-wrap">
             <table class="data-table">
               <thead>
                 <tr>
                   <th>批次号</th><th>品名</th><th>规格</th><th class="num">件数</th><th>所在冷库</th>
-                  <th>入库时刻</th><th>状态</th><th class="num">记录数</th><th class="num">最长超限</th>
+                  <th>入库时刻</th><th>状态</th><th class="num">段数</th><th class="num">记录数</th><th class="num">最长超限</th>
                   <th class="num">累计超限</th><th class="num">MKT</th><th class="num">断链数</th><th>放行情况</th>
                 </tr>
               </thead>

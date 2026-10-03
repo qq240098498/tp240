@@ -61,6 +61,7 @@ function overview(data) {
       allowExcursionMinutes: Number(settings.allowExcursionMinutes),
       allowTotalExcursionMinutes: Number(settings.allowTotalExcursionMinutes),
       chainGapMinutes: Number(settings.chainGapMinutes),
+      handoverGraceMinutes: Number(settings.handoverGraceMinutes),
       recordIntervalMinutes: Number(settings.recordIntervalMinutes),
     },
     rooms: data.rooms.map((r) => {
@@ -105,6 +106,10 @@ router.get('/batches/:id/release-check', withData((data, req) => {
   if (!batch) throw new AppError(404, 'BATCH_NOT_FOUND', '这个批次不存在');
   return coldlib.releaseCheck(data, batch);
 }));
+router.get('/batches/:id/segments', withData((data, req) => res.listSegments(data, req.params.id)));
+router.post('/batches/:id/segments', withData((data, req) => ({ __save: true, __body: res.createSegment(data, req.params.id, req.body || {}) })));
+router.patch('/segments/:id', withData((data, req) => ({ __save: true, __body: res.updateSegment(data, req.params.id, req.body || {}) })));
+router.delete('/segments/:id', withData((data, req) => ({ __save: true, __body: res.removeSegment(data, req.params.id) })));
 router.post('/batches/:id/decision', withData((data, req) => ({ __save: true, __body: res.decide(data, req.params.id, req.body || {}) })));
 
 router.get('/records', withData((data, req) => res.listRecords(data, req.query)));

@@ -235,6 +235,41 @@ tr.row-detail > td { background: #f7fbfc; border-bottom: 1px solid var(--line); 
 .cond-text { flex: 1 1 auto; }
 .cond-meta { color: var(--ink-soft); font-size: 12px; font-variant-numeric: tabular-nums; }
 
+/* 分段拼接 */
+.seg-tag {
+  display: inline-block; padding: 0 6px; border-radius: 4px;
+  background: var(--primary-soft); color: var(--primary-dark);
+  font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.cell-sub { color: var(--ink-soft); font-size: 12px; }
+.cell-wrap { white-space: normal !important; min-width: 180px; }
+
+.row-seam td {
+  font-size: 12px; padding: 4px 9px;
+  border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line);
+}
+.row-seam-exempt td { background: var(--ok-soft); color: var(--ok); }
+.row-seam-break td { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+
+.point-chip {
+  display: inline-block; margin: 1px 4px 1px 0; padding: 0 6px;
+  border: 1px solid var(--line); border-radius: 10px;
+  background: #fff; font-size: 12px; white-space: nowrap;
+}
+
+.problem-line { color: var(--accent); font-size: 12px; line-height: 1.6; }
+.culprit { margin-bottom: 8px; padding: 6px 8px; border: 1px solid #f3b7b0; border-radius: 6px; background: var(--accent-soft); }
+.culprit .problem-line { margin-top: 2px; }
+
+.judge-summary { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+
+.rules-details { margin-top: 8px; border: 1px solid var(--line-soft); border-radius: 6px; background: #fbfdfe; }
+.rules-details summary { padding: 6px 10px; cursor: pointer; color: var(--primary-dark); font-weight: 700; }
+.rules-details p { margin: 0; padding: 4px 12px; color: var(--ink-soft); font-size: 12px; line-height: 1.7; }
+.rules-details p:last-child { padding-bottom: 10px; }
+.panel-rules { margin: 0; border-top: 1px solid var(--line-soft); border-radius: 0; }
+.panel-rules summary { padding: 8px 12px; }
+
 /* 指标卡 */
 .cards {
   display: grid;

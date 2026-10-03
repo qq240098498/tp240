@@ -10,6 +10,7 @@ const DEFAULT_SETTINGS = {
   allowExcursionMinutes: 30,
   allowTotalExcursionMinutes: 120,
   chainGapMinutes: 15,
+  handoverGraceMinutes: 60,
   mktActivationEnergy: 83144,
   gasConstant: 8.314,
   probeCalibrationGraceDays: 0,
@@ -19,7 +20,7 @@ const DEFAULT_SETTINGS = {
 function normalize(raw) {
   const data = raw && typeof raw === 'object' ? raw : {};
   data.settings = Object.assign({}, DEFAULT_SETTINGS, data.settings || {});
-  for (const key of ['rooms', 'probes', 'batches', 'records', 'releases']) {
+  for (const key of ['rooms', 'probes', 'batches', 'records', 'releases', 'segments']) {
     if (!Array.isArray(data[key])) data[key] = [];
   }
   return data;

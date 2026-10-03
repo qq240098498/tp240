@@ -5,6 +5,7 @@
     "allowExcursionMinutes": 30,
     "allowTotalExcursionMinutes": 120,
     "chainGapMinutes": 15,
+    "handoverGraceMinutes": 60,
     "mktActivationEnergy": 83144,
     "gasConstant": 8.314,
     "probeCalibrationGraceDays": 0,
@@ -25,7 +26,7 @@
       "id": "rm-0002",
       "code": "R2",
       "name": "2号冷藏库",
-      "type": "冷藏库",
+      "type": "冷冻库",
       "location": "一号库区西侧",
       "capacityPlt": 520,
       "status": "运行",
@@ -56,7 +57,7 @@
     {
       "id": "pb-0001",
       "code": "P-01",
-      "roomId": "rm-0001",
+      "roomId": "rm-0002",
       "position": "上层",
       "status": "在用",
       "calibratedUntil": "2026-12-31",
@@ -92,7 +93,7 @@
     {
       "id": "pb-0005",
       "code": "P-05",
-      "roomId": "rm-0002",
+      "roomId": "rm-0003",
       "position": "下层",
       "status": "停用",
       "calibratedUntil": "2026-12-31",
@@ -171,6 +172,30 @@
       "supplier": "海陵水产",
       "status": "已放行",
       "remark": ""
+    },
+    {
+      "id": "bt-0007",
+      "code": "B-2026-0007",
+      "product": "冰鲜三文鱼",
+      "spec": "10kg/箱",
+      "units": 80,
+      "roomId": "rm-0001",
+      "loadedAt": "2026-09-20 08:00:00",
+      "supplier": "澜沧水产",
+      "status": "待放行",
+      "remark": "多段拼接：库内换探头（重叠比对）→ 冷藏车 → 回库"
+    },
+    {
+      "id": "bt-0008",
+      "code": "B-2026-0008",
+      "product": "鲜切果蔬",
+      "spec": "500g×20",
+      "units": 150,
+      "roomId": "rm-0003",
+      "loadedAt": "2026-09-22 06:00:00",
+      "supplier": "青野农科",
+      "status": "待放行",
+      "remark": "多段拼接：运输段超限与断链"
     }
   ],
   "records": [
@@ -9633,6 +9658,1466 @@
       "source": "自动",
       "operator": "",
       "remark": ""
+    },
+    {
+      "id": "rc-0947",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 08:00:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0948",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 08:15:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0949",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 08:30:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0950",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 08:45:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0951",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 09:00:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0952",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 09:15:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0953",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 09:30:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0954",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 09:45:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0955",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 10:00:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0956",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 10:15:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0957",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 10:30:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0958",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 10:45:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0959",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 11:00:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0960",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 11:15:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0961",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 11:30:00",
+      "temperatureC": 6.9,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0962",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 11:45:00",
+      "temperatureC": 7.4,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0963",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 12:00:00",
+      "temperatureC": 7.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0964",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 11:30:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0965",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 11:45:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0966",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 12:00:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0967",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 12:15:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0968",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 12:30:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0969",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 12:45:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0970",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 13:00:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0971",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 13:15:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0972",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 13:30:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0973",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 13:45:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0974",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 14:00:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0975",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 14:15:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0976",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 14:30:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0977",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 14:45:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0978",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 15:00:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0979",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 15:15:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0980",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 15:30:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0981",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 15:45:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0982",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 16:00:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0983",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 16:15:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0984",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 16:30:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0985",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 16:45:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0986",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "at": "2026-09-20 17:00:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0987",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 17:20:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0988",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 17:35:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0989",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 17:50:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0990",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 18:05:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0991",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 18:20:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0992",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 18:35:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0993",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 18:50:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0994",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 19:05:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0995",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 19:20:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0996",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 19:35:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0997",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 19:50:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0998",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 20:05:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0999",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 20:20:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1000",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 20:35:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1001",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 20:50:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1002",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 21:05:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1003",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 21:20:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1004",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 21:35:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1005",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 21:50:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1006",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 22:05:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1007",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 22:20:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1008",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 22:35:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1009",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "at": "2026-09-20 22:50:00",
+      "temperatureC": 5.6,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1010",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 23:20:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1011",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 23:35:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1012",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-20 23:50:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1013",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 00:05:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1014",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 00:20:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1015",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 00:35:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1016",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 00:50:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1017",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 01:05:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1018",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 01:20:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1019",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 01:35:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1020",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 01:50:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1021",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 02:05:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1022",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 02:20:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1023",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 02:35:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1024",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 02:50:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1025",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 03:05:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1026",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 03:20:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1027",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 03:35:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1028",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 03:50:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1029",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 04:05:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1030",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 04:20:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1031",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 04:35:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1032",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 04:50:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1033",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 05:05:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1034",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 05:20:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1035",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 05:35:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1036",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 05:50:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1037",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 06:05:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1038",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 06:20:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1039",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 06:35:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1040",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 06:50:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1041",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 07:05:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1042",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 07:20:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1043",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 07:35:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1044",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "at": "2026-09-21 07:50:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1045",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 06:00:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1046",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 06:15:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1047",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 06:30:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1048",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 06:45:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1049",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 07:00:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1050",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 07:15:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1051",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 07:30:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1052",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 07:45:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1053",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 08:00:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1054",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 08:15:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1055",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 08:30:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1056",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 08:45:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1057",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 09:00:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1058",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 09:15:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1059",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 09:30:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1060",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 09:45:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1061",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "at": "2026-09-22 10:00:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1062",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 10:20:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1063",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 10:35:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1064",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 10:50:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1065",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 11:05:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1066",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 11:20:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1067",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 11:35:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1068",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 11:50:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1069",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 12:05:00",
+      "temperatureC": 9.2,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1070",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 12:20:00",
+      "temperatureC": 9.2,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1071",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 12:35:00",
+      "temperatureC": 9.2,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1072",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 12:50:00",
+      "temperatureC": 9.2,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1073",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 13:05:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1074",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 13:20:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1075",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 13:35:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1076",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 13:50:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1080",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 14:50:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1081",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 15:05:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1082",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 15:20:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1083",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 15:35:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1084",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-22 15:50:00",
+      "temperatureC": 5.5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1085",
+      "batchId": "bt-0008",
+      "probeId": "pb-0001",
+      "at": "2026-09-22 17:20:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1086",
+      "batchId": "bt-0008",
+      "probeId": "pb-0001",
+      "at": "2026-09-22 17:35:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1087",
+      "batchId": "bt-0008",
+      "probeId": "pb-0001",
+      "at": "2026-09-22 17:50:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1088",
+      "batchId": "bt-0008",
+      "probeId": "pb-0001",
+      "at": "2026-09-22 18:05:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1089",
+      "batchId": "bt-0008",
+      "probeId": "pb-0001",
+      "at": "2026-09-22 18:20:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1090",
+      "batchId": "bt-0008",
+      "probeId": "pb-0001",
+      "at": "2026-09-22 18:35:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1091",
+      "batchId": "bt-0008",
+      "probeId": "pb-0001",
+      "at": "2026-09-22 18:50:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1092",
+      "batchId": "bt-0008",
+      "probeId": "pb-0001",
+      "at": "2026-09-22 19:05:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1093",
+      "batchId": "bt-0008",
+      "probeId": "pb-0001",
+      "at": "2026-09-22 19:20:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1094",
+      "batchId": "bt-0008",
+      "probeId": "pb-0001",
+      "at": "2026-09-22 19:35:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-1095",
+      "batchId": "bt-0008",
+      "probeId": "pb-0001",
+      "at": "2026-09-22 19:50:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
     }
   ],
   "releases": [
@@ -9648,6 +11133,116 @@
       "chainGapCount": 0,
       "basis": "温度记录齐全，全程在温度带内",
       "remark": ""
+    }
+  ],
+  "segments": [
+    {
+      "id": "sg-0001",
+      "batchId": "bt-0001",
+      "probeId": "pb-0001",
+      "roomId": "rm-0001",
+      "from": "2026-08-28 08:00:00",
+      "to": "2026-09-02 20:00:00",
+      "reason": "既有记录归集（单探头）"
+    },
+    {
+      "id": "sg-0002",
+      "batchId": "bt-0002",
+      "probeId": "pb-0002",
+      "roomId": "rm-0001",
+      "from": "2026-09-10 07:00:00",
+      "to": "2026-09-10 14:05:00",
+      "reason": "既有记录归集（单探头）"
+    },
+    {
+      "id": "sg-0003",
+      "batchId": "bt-0003",
+      "probeId": "pb-0003",
+      "roomId": "rm-0002",
+      "from": "2026-09-12 06:30:00",
+      "to": "2026-09-14 06:15:00",
+      "reason": "既有记录归集（单探头）"
+    },
+    {
+      "id": "sg-0004",
+      "batchId": "bt-0004",
+      "probeId": "pb-0004",
+      "roomId": "rm-0003",
+      "from": "2026-09-14 05:00:00",
+      "to": "2026-09-15 00:45:00",
+      "reason": "既有记录归集（单探头）"
+    },
+    {
+      "id": "sg-0005",
+      "batchId": "bt-0006",
+      "probeId": "pb-0003",
+      "roomId": "rm-0002",
+      "from": "2026-09-05 08:00:00",
+      "to": "2026-09-06 13:45:00",
+      "reason": "既有记录归集（单探头）"
+    },
+    {
+      "id": "sg-0006",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "roomId": "rm-0001",
+      "from": "2026-09-20 08:00:00",
+      "to": "2026-09-20 12:00:00",
+      "reason": "入库监护"
+    },
+    {
+      "id": "sg-0007",
+      "batchId": "bt-0007",
+      "probeId": "pb-0002",
+      "roomId": "rm-0001",
+      "from": "2026-09-20 11:30:00",
+      "to": "2026-09-20 17:00:00",
+      "reason": "P-01 读数漂移，交叉比对后换 P-02"
+    },
+    {
+      "id": "sg-0008",
+      "batchId": "bt-0007",
+      "probeId": "pb-0004",
+      "roomId": "rm-0003",
+      "from": "2026-09-20 17:20:00",
+      "to": "2026-09-20 23:00:00",
+      "reason": "转冷藏车运输"
+    },
+    {
+      "id": "sg-0009",
+      "batchId": "bt-0007",
+      "probeId": "pb-0001",
+      "roomId": "rm-0001",
+      "from": "2026-09-20 23:20:00",
+      "to": "2026-09-21 08:00:00",
+      "reason": "回 1 号冷藏库"
+    },
+    {
+      "id": "sg-0010",
+      "batchId": "bt-0008",
+      "probeId": "pb-0002",
+      "roomId": "rm-0001",
+      "from": "2026-09-22 06:00:00",
+      "to": "2026-09-22 10:00:00",
+      "reason": "入库监护"
+    },
+    {
+      "id": "sg-0011",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "roomId": "rm-0003",
+      "from": "2026-09-22 10:20:00",
+      "to": "2026-09-22 16:00:00",
+      "reason": "转冷藏车运输"
+    },
+    {
+      "id": "sg-0012",
+      "batchId": "bt-0008",
+      "probeId": "pb-0001",
+      "roomId": "rm-0001",
+      "from": "2026-09-22 17:20:00",
+      "to": "2026-09-22 20:00:00",
+      "reason": "回 1 号冷藏库"
     }
   ]
 }
