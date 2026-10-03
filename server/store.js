@@ -10,6 +10,7 @@ const DEFAULT_SETTINGS = {
   allowExcursionMinutes: 30,
   allowTotalExcursionMinutes: 120,
   chainGapMinutes: 15,
+  handoverGraceMinutes: 30,
   mktActivationEnergy: 83144,
   gasConstant: 8.314,
   probeCalibrationGraceDays: 0,
@@ -19,10 +20,36 @@ const DEFAULT_SETTINGS = {
 function normalize(raw) {
   const data = raw && typeof raw === 'object' ? raw : {};
   data.settings = Object.assign({}, DEFAULT_SETTINGS, data.settings || {});
-  for (const key of ['rooms', 'probes', 'batches', 'records', 'releases']) {
+  for (const key of ['rooms', 'probes', 'batches', 'records', 'legs', 'releases']) {
     if (!Array.isArray(data[key])) data[key] = [];
   }
+  migrateLegs(data);
   return data;
+}
+
+// 旧数据没有“监测段”：给每个批次补一条默认段，设备取批次所在冷库/车厢，
+// 探头取这批最早一条记录的探头（没有记录就留空，等挂探头），从入库时刻起开放。
+function migrateLegs(data) {
+  const existing = new Set(data.legs.map((l) => l.batchId));
+  const additions = [];
+  for (const batch of data.batches) {
+    if (existing.has(batch.id)) continue;
+    const first = data.records
+      .filter((r) => r.batchId === batch.id)
+      .sort((a, b) => (a.at < b.at ? -1 : a.at > b.at ? 1 : 0))[0];
+    additions.push({
+      id: nextId('lg', data.legs.concat(additions)),
+      batchId: batch.id,
+      seq: additions.length + 1,
+      roomId: batch.roomId,
+      probeId: first ? first.probeId : '',
+      startAt: batch.loadedAt,
+      endAt: null,
+      handoffReason: '',
+      remark: '系统补建的默认监测段',
+    });
+  }
+  data.legs = data.legs.concat(additions);
 }
 
 function load() {

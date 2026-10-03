@@ -5,6 +5,7 @@
     "allowExcursionMinutes": 30,
     "allowTotalExcursionMinutes": 120,
     "chainGapMinutes": 15,
+    "handoverGraceMinutes": 30,
     "mktActivationEnergy": 83144,
     "gasConstant": 8.314,
     "probeCalibrationGraceDays": 0,
@@ -65,7 +66,7 @@
     {
       "id": "pb-0002",
       "code": "P-02",
-      "roomId": "rm-0001",
+      "roomId": "rm-0004",
       "position": "门口",
       "status": "在用",
       "calibratedUntil": "2026-12-31",
@@ -92,11 +93,47 @@
     {
       "id": "pb-0005",
       "code": "P-05",
-      "roomId": "rm-0002",
+      "roomId": "rm-0004",
       "position": "下层",
       "status": "停用",
       "calibratedUntil": "2026-12-31",
       "remark": "读数漂移，停用待换"
+    },
+    {
+      "id": "pb-0006",
+      "code": "P-06",
+      "roomId": "rm-0001",
+      "position": "上层",
+      "status": "在用",
+      "calibratedUntil": "2027-06-30",
+      "remark": "替换漂移探头后的新探头"
+    },
+    {
+      "id": "pb-0007",
+      "code": "P-07",
+      "roomId": "rm-0003",
+      "position": "车厢中部",
+      "status": "在用",
+      "calibratedUntil": "2027-06-30",
+      "remark": "车载探头"
+    },
+    {
+      "id": "pb-0008",
+      "code": "P-08",
+      "roomId": "rm-0002",
+      "position": "中层",
+      "status": "在用",
+      "calibratedUntil": "2027-06-30",
+      "remark": "回库监测探头"
+    },
+    {
+      "id": "pb-0009",
+      "code": "P-09",
+      "roomId": "rm-0001",
+      "position": "门口",
+      "status": "在用",
+      "calibratedUntil": "2027-03-31",
+      "remark": "传输模块不稳定，偶发漏传"
     }
   ],
   "batches": [
@@ -171,6 +208,30 @@
       "supplier": "海陵水产",
       "status": "已放行",
       "remark": ""
+    },
+    {
+      "id": "bt-0007",
+      "code": "B-2026-0007",
+      "product": "冷鲜牛排",
+      "spec": "2kg/箱",
+      "units": 80,
+      "roomId": "rm-0001",
+      "loadedAt": "2026-09-20 08:00:00",
+      "supplier": "白河肉联",
+      "status": "待放行",
+      "remark": "1号库→冷藏车→2号库，三段探头拼接"
+    },
+    {
+      "id": "bt-0008",
+      "code": "B-2026-0008",
+      "product": "冷鲜鸡肉",
+      "spec": "1kg/袋",
+      "units": 150,
+      "roomId": "rm-0001",
+      "loadedAt": "2026-09-21 08:00:00",
+      "supplier": "白河肉联",
+      "status": "待放行",
+      "remark": "段内漏数据 60 分钟、回库交接空档 45 分钟超宽限"
     }
   ],
   "records": [
@@ -9633,6 +9694,396 @@
       "source": "自动",
       "operator": "",
       "remark": ""
+    },
+    {
+      "id": "rc-0947",
+      "batchId": "bt-0007",
+      "probeId": "pb-0006",
+      "at": "2026-09-20 08:00:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0948",
+      "batchId": "bt-0007",
+      "probeId": "pb-0006",
+      "at": "2026-09-20 08:15:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0949",
+      "batchId": "bt-0007",
+      "probeId": "pb-0006",
+      "at": "2026-09-20 08:30:00",
+      "temperatureC": 4.9,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0950",
+      "batchId": "bt-0007",
+      "probeId": "pb-0006",
+      "at": "2026-09-20 08:45:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0951",
+      "batchId": "bt-0007",
+      "probeId": "pb-0006",
+      "at": "2026-09-20 09:00:00",
+      "temperatureC": 5.2,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0952",
+      "batchId": "bt-0007",
+      "probeId": "pb-0006",
+      "at": "2026-09-20 09:15:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0953",
+      "batchId": "bt-0007",
+      "probeId": "pb-0006",
+      "at": "2026-09-20 09:30:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0954",
+      "batchId": "bt-0007",
+      "probeId": "pb-0006",
+      "at": "2026-09-20 09:45:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0955",
+      "batchId": "bt-0007",
+      "probeId": "pb-0006",
+      "at": "2026-09-20 10:00:00",
+      "temperatureC": 9.2,
+      "source": "自动",
+      "operator": "",
+      "remark": "读数漂移，与车载探头并行"
+    },
+    {
+      "id": "rc-0956",
+      "batchId": "bt-0007",
+      "probeId": "pb-0006",
+      "at": "2026-09-20 10:15:00",
+      "temperatureC": 9.4,
+      "source": "自动",
+      "operator": "",
+      "remark": "读数漂移，与车载探头并行"
+    },
+    {
+      "id": "rc-0957",
+      "batchId": "bt-0007",
+      "probeId": "pb-0007",
+      "at": "2026-09-20 10:00:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0958",
+      "batchId": "bt-0007",
+      "probeId": "pb-0007",
+      "at": "2026-09-20 10:15:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0959",
+      "batchId": "bt-0007",
+      "probeId": "pb-0007",
+      "at": "2026-09-20 10:30:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0960",
+      "batchId": "bt-0007",
+      "probeId": "pb-0007",
+      "at": "2026-09-20 10:45:00",
+      "temperatureC": 4.8,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0961",
+      "batchId": "bt-0007",
+      "probeId": "pb-0007",
+      "at": "2026-09-20 11:00:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0962",
+      "batchId": "bt-0007",
+      "probeId": "pb-0007",
+      "at": "2026-09-20 11:15:00",
+      "temperatureC": 5.2,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0963",
+      "batchId": "bt-0007",
+      "probeId": "pb-0007",
+      "at": "2026-09-20 11:30:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0964",
+      "batchId": "bt-0007",
+      "probeId": "pb-0007",
+      "at": "2026-09-20 11:45:00",
+      "temperatureC": 4.9,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0965",
+      "batchId": "bt-0007",
+      "probeId": "pb-0007",
+      "at": "2026-09-20 12:00:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0966",
+      "batchId": "bt-0007",
+      "probeId": "pb-0008",
+      "at": "2026-09-20 12:20:00",
+      "source": "自动",
+      "operator": "",
+      "remark": "",
+      "temperatureC": 5
+    },
+    {
+      "id": "rc-0967",
+      "batchId": "bt-0007",
+      "probeId": "pb-0008",
+      "at": "2026-09-20 12:35:00",
+      "source": "自动",
+      "operator": "",
+      "remark": "",
+      "temperatureC": 5.1
+    },
+    {
+      "id": "rc-0968",
+      "batchId": "bt-0007",
+      "probeId": "pb-0008",
+      "at": "2026-09-20 12:50:00",
+      "source": "自动",
+      "operator": "",
+      "remark": "",
+      "temperatureC": 5
+    },
+    {
+      "id": "rc-0969",
+      "batchId": "bt-0007",
+      "probeId": "pb-0008",
+      "at": "2026-09-20 13:05:00",
+      "source": "自动",
+      "operator": "",
+      "remark": "",
+      "temperatureC": 4.9
+    },
+    {
+      "id": "rc-0970",
+      "batchId": "bt-0007",
+      "probeId": "pb-0008",
+      "at": "2026-09-20 13:20:00",
+      "source": "自动",
+      "operator": "",
+      "remark": "",
+      "temperatureC": 5
+    },
+    {
+      "id": "rc-0971",
+      "batchId": "bt-0007",
+      "probeId": "pb-0008",
+      "at": "2026-09-20 13:35:00",
+      "source": "自动",
+      "operator": "",
+      "remark": "",
+      "temperatureC": 5.2
+    },
+    {
+      "id": "rc-0972",
+      "batchId": "bt-0007",
+      "probeId": "pb-0008",
+      "at": "2026-09-20 13:50:00",
+      "source": "自动",
+      "operator": "",
+      "remark": "",
+      "temperatureC": 5
+    },
+    {
+      "id": "rc-0973",
+      "batchId": "bt-0008",
+      "probeId": "pb-0009",
+      "at": "2026-09-21 08:00:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0974",
+      "batchId": "bt-0008",
+      "probeId": "pb-0009",
+      "at": "2026-09-21 08:15:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0975",
+      "batchId": "bt-0008",
+      "probeId": "pb-0009",
+      "at": "2026-09-21 09:15:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": "传输恢复后补传"
+    },
+    {
+      "id": "rc-0976",
+      "batchId": "bt-0008",
+      "probeId": "pb-0009",
+      "at": "2026-09-21 09:30:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0977",
+      "batchId": "bt-0008",
+      "probeId": "pb-0005",
+      "at": "2026-09-21 08:30:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": "停用探头误传，应落选"
+    },
+    {
+      "id": "rc-0978",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-21 10:00:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0979",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-21 10:15:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0980",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-21 10:30:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0981",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-21 10:45:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0982",
+      "batchId": "bt-0008",
+      "probeId": "pb-0004",
+      "at": "2026-09-21 11:00:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0983",
+      "batchId": "bt-0008",
+      "probeId": "pb-0008",
+      "at": "2026-09-21 11:45:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0984",
+      "batchId": "bt-0008",
+      "probeId": "pb-0008",
+      "at": "2026-09-21 12:00:00",
+      "temperatureC": 5.1,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
+    },
+    {
+      "id": "rc-0985",
+      "batchId": "bt-0008",
+      "probeId": "pb-0008",
+      "at": "2026-09-21 12:15:00",
+      "temperatureC": 5,
+      "source": "自动",
+      "operator": "",
+      "remark": ""
     }
   ],
   "releases": [
@@ -9648,6 +10099,140 @@
       "chainGapCount": 0,
       "basis": "温度记录齐全，全程在温度带内",
       "remark": ""
+    }
+  ],
+  "legs": [
+    {
+      "id": "lg-0101",
+      "batchId": "bt-0007",
+      "seq": 1,
+      "roomId": "rm-0001",
+      "probeId": "pb-0006",
+      "startAt": "2026-09-20 08:00:00",
+      "endAt": "2026-09-20 10:30:00",
+      "handoffReason": "装车发运，P-06 读数漂移，与车载探头并行交接后停用",
+      "remark": ""
+    },
+    {
+      "id": "lg-0102",
+      "batchId": "bt-0007",
+      "seq": 2,
+      "roomId": "rm-0003",
+      "probeId": "pb-0007",
+      "startAt": "2026-09-20 10:00:00",
+      "endAt": "2026-09-20 12:00:00",
+      "handoffReason": "运抵 2 号库，交接库内探头，到货晚接 20 分钟",
+      "remark": ""
+    },
+    {
+      "id": "lg-0103",
+      "batchId": "bt-0007",
+      "seq": 3,
+      "roomId": "rm-0002",
+      "probeId": "pb-0008",
+      "startAt": "2026-09-20 12:20:00",
+      "endAt": null,
+      "handoffReason": "",
+      "remark": ""
+    },
+    {
+      "id": "lg-0104",
+      "batchId": "bt-0008",
+      "seq": 1,
+      "roomId": "rm-0001",
+      "probeId": "pb-0009",
+      "startAt": "2026-09-21 08:00:00",
+      "endAt": "2026-09-21 10:00:00",
+      "handoffReason": "装车发运",
+      "remark": "段内 08:15→09:15 漏传 60 分钟"
+    },
+    {
+      "id": "lg-0105",
+      "batchId": "bt-0008",
+      "seq": 2,
+      "roomId": "rm-0003",
+      "probeId": "pb-0004",
+      "startAt": "2026-09-21 10:00:00",
+      "endAt": "2026-09-21 11:45:00",
+      "handoffReason": "运抵 2 号库",
+      "remark": ""
+    },
+    {
+      "id": "lg-0106",
+      "batchId": "bt-0008",
+      "seq": 3,
+      "roomId": "rm-0002",
+      "probeId": "pb-0008",
+      "startAt": "2026-09-21 11:45:00",
+      "endAt": null,
+      "handoffReason": "",
+      "remark": "车头卸货到库内挂载间隔 45 分钟"
+    },
+    {
+      "id": "lg-0107",
+      "batchId": "bt-0001",
+      "seq": 1,
+      "roomId": "rm-0001",
+      "probeId": "pb-0001",
+      "startAt": "2026-08-28 08:00:00",
+      "endAt": null,
+      "handoffReason": "",
+      "remark": "系统补建的默认监测段"
+    },
+    {
+      "id": "lg-0108",
+      "batchId": "bt-0002",
+      "seq": 2,
+      "roomId": "rm-0001",
+      "probeId": "pb-0002",
+      "startAt": "2026-09-10 07:00:00",
+      "endAt": null,
+      "handoffReason": "",
+      "remark": "系统补建的默认监测段"
+    },
+    {
+      "id": "lg-0109",
+      "batchId": "bt-0003",
+      "seq": 3,
+      "roomId": "rm-0002",
+      "probeId": "pb-0003",
+      "startAt": "2026-09-12 06:30:00",
+      "endAt": null,
+      "handoffReason": "",
+      "remark": "系统补建的默认监测段"
+    },
+    {
+      "id": "lg-0110",
+      "batchId": "bt-0004",
+      "seq": 4,
+      "roomId": "rm-0003",
+      "probeId": "pb-0004",
+      "startAt": "2026-09-14 05:00:00",
+      "endAt": null,
+      "handoffReason": "",
+      "remark": "系统补建的默认监测段"
+    },
+    {
+      "id": "lg-0111",
+      "batchId": "bt-0005",
+      "seq": 5,
+      "roomId": "rm-0001",
+      "probeId": "",
+      "startAt": "2026-09-15 09:00:00",
+      "endAt": null,
+      "handoffReason": "",
+      "remark": "系统补建的默认监测段"
+    },
+    {
+      "id": "lg-0112",
+      "batchId": "bt-0006",
+      "seq": 6,
+      "roomId": "rm-0002",
+      "probeId": "pb-0003",
+      "startAt": "2026-09-05 08:00:00",
+      "endAt": null,
+      "handoffReason": "",
+      "remark": "系统补建的默认监测段"
     }
   ]
 }

@@ -49,10 +49,13 @@ function decorateBatch(data, batch) {
   return Object.assign({}, batch, {
     roomCode: roomCode(data, batch.roomId),
     recordCount: stats.recordCount,
+    droppedCount: check.droppedCount,
     longestExcursionMinutes: stats.longestMinutes,
     totalExcursionMinutes: stats.totalMinutes,
     mkt: check.mkt,
     chainGapCount: check.chain.gapCount,
+    exemptGapCount: check.chain.exemptGapCount,
+    legCount: check.legs.length,
     expiredProbeCodes: check.expiredProbes.map((p) => p.probeCode),
     releaseCheck: check,
     releaseCount: releases.length,
@@ -202,15 +205,35 @@ function listBatches(data, query) {
 function batchDetail(data, id) {
   const batch = data.batches.find((b) => b.id === id);
   if (!batch) throw new AppError(404, 'BATCH_NOT_FOUND', '这个批次不存在');
-  const rows = coldlib.recordsOfBatch(data, id).map((r) => Object.assign({}, r, {
-    probeCode: probeCode(data, r.probeId),
-    probeExpired: !coldlib.probeValidOn(coldlib.probeOf(data, r.probeId), String(r.at).slice(0, 10)),
-  }));
+  const tl = coldlib.timeline(data, id);
+  const probeText = (probeId) => {
+    const probe = coldlib.probeOf(data, probeId);
+    return probe ? probe.code : '';
+  };
+  const timelineRows = tl.points.map((p) => {
+    const probe = coldlib.probeOf(data, p.probeId);
+    return {
+      id: p.id, at: p.at, probeId: p.probeId, probeCode: probeText(p.probeId),
+      temperatureC: p.temperatureC, source: p.source, operator: p.operator,
+      legId: p.legId, seq: p.seq,
+      roomCode: (data.rooms.find((r) => r.id === p.roomId) || {}).code || '',
+      outOfRange: p.temperatureC > Number(data.settings.upperLimitC) || p.temperatureC < Number(data.settings.lowerLimitC),
+      probeExpired: !coldlib.probeValidOn(probe, String(p.at).slice(0, 10)),
+      probeStatus: probe ? probe.status : '',
+    };
+  });
+  const droppedRows = tl.dropped.map((d) => Object.assign({}, d, { probeCode: probeText(d.probeId) }));
+  const stats = coldlib.excursionStats(data, id);
   return Object.assign({}, decorateBatch(data, batch), {
-    records: rows,
-    effectiveRecords: coldlib.effectiveRecords(data, id).map((r) => Object.assign({}, r, { probeCode: probeCode(data, r.probeId) })),
-    segments: coldlib.excursionStats(data, id).segments,
+    legs: coldlib.releaseCheck(data, batch).legs,
+    timeline: timelineRows,
+    droppedRecords: droppedRows,
+    records: timelineRows,
+    effectiveRecords: timelineRows,
+    segments: stats.segments,
+    segmentsByLeg: stats.segmentsByLeg,
     chainGaps: coldlib.chainGaps(data, id).gaps,
+    chainDetail: coldlib.chainGaps(data, id),
     releases: data.releases.filter((r) => r.batchId === id).slice().sort((a, b) => (a.decidedAt < b.decidedAt ? 1 : -1)),
   });
 }
@@ -271,8 +294,162 @@ function removeBatch(data, id) {
   const used = data.records.filter((r) => r.batchId === id).length;
   data.records = data.records.filter((r) => r.batchId !== id);
   data.releases = data.releases.filter((r) => r.batchId !== id);
+  data.legs = data.legs.filter((l) => l.batchId !== id);
   data.batches = data.batches.filter((b) => b.id !== id);
   return { removed: id, removedRecords: used };
+}
+
+/* ---------- 监测段（一批货可以跨多台探头、多个设备） ---------- */
+
+const TIME_RE = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+
+function listLegs(data, query) {
+  const q = query || {};
+  let rows = data.legs.slice();
+  if (q.batchId) rows = rows.filter((l) => l.batchId === q.batchId);
+  const tlCache = {};
+  return rows
+    .map((l) => {
+      if (!tlCache[l.batchId]) tlCache[l.batchId] = coldlib.timeline(data, l.batchId);
+      return decorateLegPub(data, l, tlCache[l.batchId]);
+    })
+    .sort((a, b) => (a.batchId < b.batchId ? -1 : a.batchId > b.batchId ? 1 : a.seq - b.seq));
+}
+
+function decorateLegPub(data, leg, tl) {
+  const room = data.rooms.find((r) => r.id === leg.roomId);
+  const probe = data.probes.find((p) => p.id === leg.probeId);
+  const rows = tl.points.filter((p) => p.legId === leg.id);
+  return {
+    id: leg.id,
+    batchId: leg.batchId,
+    seq: leg.seq,
+    roomId: leg.roomId,
+    roomCode: room ? room.code : '',
+    roomName: room ? room.name : '',
+    roomStatus: room ? room.status : '',
+    probeId: leg.probeId,
+    probeCode: probe ? probe.code : '',
+    probeStatus: probe ? probe.status : '',
+    calibratedUntil: probe ? probe.calibratedUntil : '',
+    startAt: leg.startAt,
+    endAt: leg.endAt,
+    handoffReason: leg.handoffReason || '',
+    remark: leg.remark || '',
+    recordCount: rows.length,
+    firstAt: rows.length ? rows[0].at : '',
+    lastAt: rows.length ? rows[rows.length - 1].at : '',
+  };
+}
+
+function legPayloadErrors(data, batch, payload, legs, selfId) {
+  const errors = {};
+  if (!data.rooms.some((r) => r.id === payload.roomId)) errors.roomId = '监测设备（冷库/冷藏车）不存在';
+  const probe = data.probes.find((p) => p.id === payload.probeId);
+  if (!payload.probeId) errors.probeId = '要挂一台探头';
+  else if (!probe) errors.probeId = '探头不存在';
+  else if (probe.roomId !== payload.roomId) errors.probeId = '这台探头不属于所选设备，请在该设备名下选探头';
+  else if (probe.status === '停用') errors.probeId = '停用探头不能挂到监测段上（其记录不参与判定）';
+  if (!TIME_RE.test(String(payload.startAt || ''))) errors.startAt = '开始时刻格式要像 2026-09-01 08:00:00';
+  if (payload.endAt !== null && payload.endAt !== '' && !TIME_RE.test(String(payload.endAt || ''))) {
+    errors.endAt = '结束时刻留空表示当前段，或填 2026-09-01 08:00:00';
+  }
+  if (!errors.startAt && payload.startAt < batch.loadedAt) errors.startAt = '监测段不能早于批次入库时刻 ' + batch.loadedAt;
+  if (!errors.startAt && !errors.endAt && payload.endAt && payload.endAt <= payload.startAt) {
+    errors.endAt = '结束时刻要晚于开始时刻';
+  }
+  return { errors, probe };
+}
+
+function createLeg(data, batchId, payload) {
+  const batch = data.batches.find((b) => b.id === batchId);
+  if (!batch) throw new AppError(404, 'BATCH_NOT_FOUND', '这个批次不存在');
+  const legs = data.legs.filter((l) => l.batchId === batchId).sort((a, b) => a.seq - b.seq);
+  const body = {
+    roomId: String(payload.roomId || ''),
+    probeId: String(payload.probeId || ''),
+    startAt: String(payload.startAt || ''),
+    endAt: payload.endAt === undefined ? null : (payload.endAt || null),
+  };
+  const check = legPayloadErrors(data, batch, body, legs, null);
+  const errors = check.errors;
+  let prevOpen = null;
+  if (legs.length) {
+    const prev = legs[legs.length - 1];
+    if (body.startAt < prev.startAt) errors.startAt = '新段要接在第 ' + prev.seq + ' 段之后，开始时刻不能早于 ' + prev.startAt;
+    if (prev.endAt === null) {
+      // 上一段仍开放：默认在新段开始这一刻封段；需要并行交接可建段后再改前段封尾时刻
+      prevOpen = prev;
+    }
+  }
+  if (Object.keys(errors).length) throw new AppError(400, 'VALIDATION_FAILED', '监测段没通过校验', errors);
+  if (prevOpen) prevOpen.endAt = body.startAt;
+  const leg = {
+    id: store.nextId('lg', data.legs),
+    batchId: batch.id,
+    seq: legs.length + 1,
+    roomId: body.roomId,
+    probeId: body.probeId,
+    startAt: body.startAt,
+    endAt: body.endAt,
+    handoffReason: String(payload.handoffReason || '').trim(),
+    remark: String(payload.remark || '').trim(),
+  };
+  data.legs.push(leg);
+  return decorateLegPub(data, leg, coldlib.timeline(data, batch.id));
+}
+
+function updateLeg(data, batchId, legId, payload) {
+  const batch = data.batches.find((b) => b.id === batchId);
+  if (!batch) throw new AppError(404, 'BATCH_NOT_FOUND', '这个批次不存在');
+  const leg = data.legs.find((l) => l.id === legId && l.batchId === batchId);
+  if (!leg) throw new AppError(404, 'LEG_NOT_FOUND', '这一段监测不存在');
+  const legs = data.legs.filter((l) => l.batchId === batchId).sort((a, b) => a.seq - b.seq);
+  const merged = Object.assign({}, leg, payload);
+  const body = {
+    roomId: String(merged.roomId || ''),
+    probeId: String(merged.probeId || ''),
+    startAt: String(merged.startAt || ''),
+    endAt: merged.endAt === undefined || merged.endAt === '' ? null : merged.endAt,
+  };
+  const { errors } = legPayloadErrors(data, batch, body, legs, leg.id);
+  const idx = legs.findIndex((l) => l.id === leg.id);
+  const prev = legs[idx - 1];
+  const next = legs[idx + 1];
+  if (prev && body.startAt < prev.startAt) errors.startAt = '开始时刻不能早于上一段开始 ' + prev.startAt;
+  if (next && body.startAt > next.startAt) errors.startAt = '开始时刻不能晚于下一段开始 ' + next.startAt;
+  if (next && body.endAt === null) errors.endAt = '只有最后一段可以开放不填结束时刻';
+  // 交接时允许旧段探头与新段并行一小段（段窗交叠），同一刻以序号靠后的新段为准，
+  // 因此这里不限制前段结束必须早于后段开始；同一刻取谁由时间线口径决定。
+  if (Object.keys(errors).length) throw new AppError(400, 'VALIDATION_FAILED', '监测段没通过校验', errors);
+  Object.assign(leg, {
+    roomId: body.roomId,
+    probeId: body.probeId,
+    startAt: body.startAt,
+    endAt: body.endAt,
+    handoffReason: payload.handoffReason !== undefined ? String(payload.handoffReason).trim() : leg.handoffReason,
+    remark: payload.remark !== undefined ? String(payload.remark).trim() : leg.remark,
+  });
+  return decorateLegPub(data, leg, coldlib.timeline(data, batch.id));
+}
+
+function removeLeg(data, batchId, legId) {
+  const batch = data.batches.find((b) => b.id === batchId);
+  if (!batch) throw new AppError(404, 'BATCH_NOT_FOUND', '这个批次不存在');
+  const legs = data.legs.filter((l) => l.batchId === batchId).sort((a, b) => a.seq - b.seq);
+  const leg = legs.find((l) => l.id === legId);
+  if (!leg) throw new AppError(404, 'LEG_NOT_FOUND', '这一段监测不存在');
+  if (legs.length === 1) throw new AppError(409, 'LEG_LAST', '一批货至少要保留一段监测；不用的段可以改挂设备而不是删除');
+  if (leg.seq !== legs[legs.length - 1].seq) throw new AppError(409, 'LEG_NOT_LAST', '只能从最后一段往前删，先删第 ' + legs[legs.length - 1].seq + ' 段');
+  const tl = coldlib.timeline(data, batchId);
+  const inWindow = tl.points.filter((p) => p.legId === leg.id).length;
+  if (inWindow > 0) {
+    throw new AppError(409, 'LEG_IN_USE', '这一段时间窗里还有 ' + inWindow + ' 条参与判定的温度记录，请先删除或移走这些记录再删段', { count: inWindow });
+  }
+  data.legs = data.legs.filter((l) => l.id !== leg.id);
+  const last = data.legs.filter((l) => l.batchId === batchId).sort((a, b) => b.seq - a.seq)[0];
+  if (last) last.endAt = null;
+  return { removed: leg.id };
 }
 
 function listRecords(data, query) {
@@ -298,9 +475,22 @@ function validateRecord(data, payload) {
   if (!batch) errors.batchId = '批次不存在';
   const probe = data.probes.find((p) => p.id === payload.probeId);
   if (!probe) errors.probeId = '探头不存在';
+  else if (probe.status === '停用') errors.probeId = '这台探头已停用，其记录不参与判定；请先给批次加挂新探头的监测段';
   if (!SOURCE_LIST.includes(payload.source)) errors.source = '来源只能是：' + SOURCE_LIST.join('、');
   if (!/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(String(payload.at || ''))) errors.at = '记录时刻格式要像 2026-09-01 08:00:00';
   if (payload.temperatureC === undefined || payload.temperatureC === '') errors.temperatureC = '温度不能为空';
+  if (batch && probe && probe.status !== '停用' && /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(String(payload.at || ''))) {
+    // 记录必须由该批该时段在册监测段的探头产生，否则会被时间线丢掉、算不进判定
+    const at = String(payload.at);
+    const legs = data.legs.filter((l) => l.batchId === batch.id);
+    const inLeg = legs.find((l) => l.probeId === probe.id && l.startAt <= at && (l.endAt === null || l.endAt === '' || at <= l.endAt));
+    if (!inLeg) {
+      const windowLeg = legs.find((l) => l.startAt <= at && (l.endAt === null || l.endAt === '' || at <= l.endAt));
+      errors.at = windowLeg
+        ? '这个时刻该批在册探头是 ' + probeCode(data, windowLeg.probeId) + '，不是所选探头；换探头要先在批次详情登记新的监测段'
+        : '这个时刻不在该批次任何监测段的时间窗内，请先在批次详情里补一段监测（换设备/换探头要先登记）';
+    }
+  }
   if (Object.keys(errors).length) throw new AppError(400, 'VALIDATION_FAILED', '这条温度记录没通过校验', errors);
   return { batch, probe };
 }
@@ -359,6 +549,14 @@ function decide(data, batchId, payload) {
     longestExcursionMinutes: check.longestMinutes,
     totalExcursionMinutes: check.totalMinutes,
     chainGapCount: check.chain.gapCount,
+    exemptGapCount: check.chain.exemptGapCount,
+    legCount: check.legs.length,
+    // 判定快照：哪一段、谁的设备、哪几条记录导致不过，交接豁免单列，便于台账追溯
+    failed: check.failed,
+    culprits: check.conditions
+      .filter((c) => !c.ok)
+      .map((c) => ({ key: c.key, text: c.text, value: c.value, limit: c.limit, items: c.culprits || [] })),
+    exemptions: (check.conditions.find((c) => c.key === 'chain') || {}).exemptions || [],
     basis: String(payload.basis || '').trim(),
     remark: String(payload.remark || ''),
   };
@@ -372,6 +570,7 @@ module.exports = {
   listRooms, roomDetail, createRoom, updateRoom, removeRoom,
   listProbes, createProbe, updateProbe, removeProbe,
   listBatches, batchDetail, createBatch, updateBatch, removeBatch,
+  listLegs, createLeg, updateLeg, removeLeg,
   listRecords, createRecord, removeRecord,
   listReleases, decide,
   ROOM_STATUS, ROOM_TYPE, PROBE_STATUS, BATCH_STATUS, SOURCE_LIST,

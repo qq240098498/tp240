@@ -316,6 +316,38 @@ tr.row-detail > td { background: #f7fbfc; border-bottom: 1px solid var(--line); 
 .field-error input, .field-error select, .field-error textarea { border-color: var(--accent); background: var(--accent-soft); }
 .field-hint { color: var(--ink-soft); font-size: 12px; margin-top: 2px; }
 
+/* 多段时间线、定责 */
+.detail-policy { margin-bottom: 10px; }
+.policy-box {
+  border: 1px solid var(--line-soft);
+  background: #fbfdfe;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+.policy-box div { margin: 2px 0; }
+.detail-block-wide { flex: 1 1 100%; min-width: 320px; }
+.detail-block h5 {
+  margin: 8px 0 4px;
+  font-size: 12px;
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+.culprit-list, .exempt-list {
+  list-style: none;
+  margin: 4px 0 2px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.culprit-list { background: var(--accent-soft); color: #8a2b20; }
+.exempt-list { background: #f1f6f3; color: var(--ink-soft); }
+.culprit-list li, .exempt-list li { margin: 2px 0; }
+.release-failed { color: #8a2b20; font-size: 12px; }
+
 @media (max-width: 720px) {
   .layout { flex-direction: column; }
   .filters { width: 100%; flex: 1 1 auto; position: static; }

@@ -53,6 +53,8 @@ function overview(data) {
     readyToRelease,
     blockedCount,
     noRecordBatches,
+    realGapCount: decorated.reduce((acc, d) => acc + d.check.chain.gapCount, 0),
+    exemptGapCount: decorated.reduce((acc, d) => acc + d.check.chain.exemptGapCount, 0),
     maxMkt: mktValues.length ? store.round(Math.max.apply(null, mktValues)) : 0,
     averageMkt: mktValues.length ? store.round(mktValues.reduce((a, b) => a + b, 0) / mktValues.length) : 0,
     settings: {
@@ -61,6 +63,7 @@ function overview(data) {
       allowExcursionMinutes: Number(settings.allowExcursionMinutes),
       allowTotalExcursionMinutes: Number(settings.allowTotalExcursionMinutes),
       chainGapMinutes: Number(settings.chainGapMinutes),
+      handoverGraceMinutes: Number(settings.handoverGraceMinutes),
       recordIntervalMinutes: Number(settings.recordIntervalMinutes),
     },
     rooms: data.rooms.map((r) => {
@@ -106,6 +109,11 @@ router.get('/batches/:id/release-check', withData((data, req) => {
   return coldlib.releaseCheck(data, batch);
 }));
 router.post('/batches/:id/decision', withData((data, req) => ({ __save: true, __body: res.decide(data, req.params.id, req.body || {}) })));
+
+router.get('/batches/:id/legs', withData((data, req) => res.listLegs(data, Object.assign({}, req.query, { batchId: req.params.id }))));
+router.post('/batches/:id/legs', withData((data, req) => ({ __save: true, __body: res.createLeg(data, req.params.id, req.body || {}) })));
+router.patch('/batches/:id/legs/:legId', withData((data, req) => ({ __save: true, __body: res.updateLeg(data, req.params.id, req.params.legId, req.body || {}) })));
+router.delete('/batches/:id/legs/:legId', withData((data, req) => ({ __save: true, __body: res.removeLeg(data, req.params.id, req.params.legId) })));
 
 router.get('/records', withData((data, req) => res.listRecords(data, req.query)));
 router.post('/records', withData((data, req) => ({ __save: true, __body: res.createRecord(data, req.body || {}) })));

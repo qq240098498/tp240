@@ -96,15 +96,15 @@
         <div class="panel">
           <div class="panel-head">
             <h2>批次清单</h2>
-            <span class="panel-hint">点一行展开温度记录、超限段、断链与放行判定</span>
+            <span class="panel-hint">一批货可跨多台探头与多个设备；点一行展开监测段、判定时间线、交接豁免、断链与放行判定</span>
           </div>
           <div class="table-wrap">
             <table class="data-table">
               <thead>
                 <tr>
                   <th>批次号</th><th>品名</th><th>规格</th><th class="num">件数</th><th>所在冷库</th>
-                  <th>入库时刻</th><th>状态</th><th class="num">记录数</th><th class="num">最长超限</th>
-                  <th class="num">累计超限</th><th class="num">MKT</th><th class="num">断链数</th><th>放行情况</th>
+                  <th>入库时刻</th><th>状态</th><th class="num">段数</th><th class="num">记录数</th><th class="num">最长超限</th>
+                  <th class="num">累计超限</th><th class="num">MKT</th><th class="num">真断链/豁免</th><th>放行情况</th>
                 </tr>
               </thead>
               <tbody id="batchRows"></tbody>
@@ -145,8 +145,8 @@
               <thead>
                 <tr>
                   <th>批次</th><th>决定</th><th>时刻</th><th>经办人</th><th class="num">当时的 MKT</th>
-                  <th class="num">最长超限</th><th class="num">累计超限</th><th class="num">断链数</th>
-                  <th>依据</th><th>备注</th>
+                  <th class="num">最长超限</th><th class="num">累计超限</th><th class="num">真断链/豁免</th>
+                  <th>不达标项与责任段</th><th>依据</th><th>备注</th>
                 </tr>
               </thead>
               <tbody id="releaseRows"></tbody>
